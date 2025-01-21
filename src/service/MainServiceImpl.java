@@ -5,6 +5,7 @@ import model.User;
 import repository.CarRepository;
 import repository.UserRepository;
 import utils.MyList;
+import utils.PersonValidation;
 
 /**
  * @author Sergey Bugaenko
@@ -25,7 +26,32 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public User registerUser(String email, String password) {
-        return null;
+        /*
+        1. Валидация email / password
+        2. Проверить уникальность email (что у нас нет пользователя с таким email)
+        3. Создаю нового пользователя, и сохраняю в БД
+        4. Возвращаю пользователя в слой view
+
+         */
+        if (!PersonValidation.isEmailValid(email)) {
+            System.out.print("Email не прошел проверку!");
+            return null;
+        }
+
+        if (!PersonValidation.isPasswordValid(password)) {
+            System.out.println("Password не прошел проверку!");
+            return null;
+        }
+
+        if (userRepository.isEmailExist(email)) {
+            System.out.println("Email already exists!");
+            return null;
+        }
+
+        User user = userRepository.addUser(email, password);
+
+        return user;
+
     }
 
     @Override
