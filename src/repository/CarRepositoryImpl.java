@@ -74,6 +74,10 @@ public class CarRepositoryImpl implements CarRepository {
 
     @Override
     public void deleteById(int id) {
+        Car car = getById(id);
+
+        if (car == null) return;
+        cars.remove(car);
         // Todo
     }
 }
